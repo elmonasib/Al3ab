@@ -117,7 +117,7 @@ body { background-color: var(--dark-bg); color: var(--text-white); direction: rt
     }
 }
 /* قسم الحصان البرتقالي المركزي */
-.hero-section { text-align: center; padding: 50px 20px; }
+
 .attention-horse { width: 90px; height: 90px; margin: 0 auto 15px; color: var(--primary-orange); display: block; }
 
 .categories-container { display: flex; justify-content: center; gap: 10px; margin-bottom: 30px; flex-wrap: wrap; }
@@ -577,6 +577,8 @@ body { background-color: var(--dark-bg); color: var(--text-white); direction: rt
     width: 100%;
     display: flex;
     justify-content: center;
+    margin-top: 15px;
+    margin-bottom: 20px;
     
 }
 
@@ -598,5 +600,6 @@ body { background-color: var(--dark-bg); color: var(--text-white); direction: rt
     .toy-banner {
         width: 95%;
         height: auto;
+        
     }
 }
