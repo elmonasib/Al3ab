@@ -622,18 +622,18 @@ body { background-color: var(--dark-bg); color: var(--text-white); direction: rt
 /* --- تعديل حجم أزرار الأقسام للجوال فقط --- */
 @media (max-width: 768px) {
     .categories-container {
-        gap: 8px; /* تقليل المسافة بين الأزرار */
+        gap: 6px; /* تقليل المسافة بين الأزرار */
         padding: 20px 3% 10px; /* تقليل الحشو العلوي */
     }
 
     .cat-btn {
-        padding: 6px 15px; /* تصغير الحشو الداخلي للزر */
-        font-size: 0.50rem; /* تصغير حجم الخط */
+        padding: 1px 15px; /* تصغير الحشو الداخلي للزر */
+        font-size: 0.70rem; /* تصغير حجم الخط */
         border-radius: 20px; /* جعل الانحناء أنعم يتناسب مع الحجم الصغير */
     }
 
     .cat-btn i {
-        font-size: 0.6rem; /* تصغير حجم الأيقونة داخل الزر */
+        font-size: 0.8rem; /* تصغير حجم الأيقونة داخل الزر */
         margin-left: 4px;
     }
 }

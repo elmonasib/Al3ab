@@ -181,11 +181,9 @@ function sendWhatsApp() {
 
 // --- 7. إدارة النقرات (إغلاق كل شيء عند النقر في الفراغ) ---
 window.onclick = (e) => {
-    // إغلاق النوافذ المنبثقة
     if (e.target == modal) closeModal();
     if (e.target == policyModal) closePolicyModal();
     
-    // إغلاق قائمة الجوال عند النقر خارجها
     const navLinks = document.querySelector('.nav-links');
     const menuToggle = document.querySelector('.menu-toggle');
     if (navLinks && navLinks.classList.contains('active')) {
@@ -194,6 +192,23 @@ window.onclick = (e) => {
         }
     }
 };
+
+// --- 8. وظيفة البحث الجديدة ---
+function handleSearch(query) {
+    const term = query.toLowerCase().trim();
+    
+    if (term === "") {
+        render(allProducts);
+        return;
+    }
+
+    const filtered = allProducts.filter(p => 
+        p.name.toLowerCase().includes(term) || 
+        (p.cat && p.cat.toLowerCase().includes(term))
+    );
+
+    render(filtered);
+}
 
 if(whatsappBtn) whatsappBtn.onclick = sendWhatsApp;
 document.addEventListener('DOMContentLoaded', () => render(allProducts));
