@@ -66,25 +66,21 @@ function render(items) {
             </div>
             <div class="card-info">
                 <h3>${p.name}</h3>
-                <div class="product-specs" style="margin-bottom: 8px; color: #bbb; font-size: 0.85rem;">
+                <div class="product-specs">
                     <span><i class="fas fa-ruler-vertical"></i> ${p.length || '--'}</span>
-                    <span style="margin: 0 5px;"> | </span>
+                    <span> | </span>
                     <span><i class="fas fa-tag"></i> ${p.status || 'مستعمل'}</span>
                 </div>
                 
-                <div class="price-section" style="display: flex; flex-direction: column; gap: 6px;">
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <span class="price" style="color: var(--primary-orange); font-weight: bold; font-size: 1.2rem;">${p.price}</span>
-                        ${hasDiscount ? `<span class="old-price" style="text-decoration: line-through; color: #888; font-size: 0.85rem;">${p.oldPrice}</span>` : ''}
+                <div class="price-section">
+                    <div class="price-row">
+                        <span class="price" style="color: var(--primary-orange); font-weight: bold;">${p.price}</span>
+                        ${hasDiscount ? `<span class="old-price" style="text-decoration: line-through; color: #888;">${p.oldPrice}</span>` : ''}
+                        <span class="availability-tag"><i class="fas fa-check-circle"></i> متوفر</span>
                     </div>
                     
-                    <div class="payment-tags" style="display: flex; gap: 4px; flex-wrap: wrap;">
-                        <span style="font-size: 0.65rem; background: #27ae60; color: white; padding: 2px 6px; border-radius: 4px;">
-                            <i class="fas fa-check-circle"></i> متوفر
-                        </span>
-                        <span style="font-size: 0.65rem; background: #34495e; color: white; padding: 2px 6px; border-radius: 4px;">
-                            <i class="fas fa-hand-holding-usd"></i> الدفع عند الاستلام
-                        </span>
+                    <div class="payment-row">
+                        <span class="cod-tag"><i class="fas fa-hand-holding-usd"></i> الدفع عند الاستلام بالمغرب</span>
                     </div>
                 </div>
             </div>
@@ -103,7 +99,7 @@ function toggleMenu() {
 // --- 5. وظائف الروابط والسياسات ---
 function filterByCategory(category, btn) {
     const navLinks = document.querySelector('.nav-links');
-    if (navLinks) navLinks.classList.remove('active'); // إغلاق القائمة فور الضغط
+    if (navLinks) navLinks.classList.remove('active'); 
 
     if (category === 'latest') {
         const latest = [...allProducts].sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded));
@@ -179,7 +175,7 @@ function sendWhatsApp() {
     window.open(`https://wa.me/${myPhoneNumber}?text=${encodeURIComponent(text)}`, '_blank');
 }
 
-// --- 7. إدارة النقرات (إغلاق كل شيء عند النقر في الفراغ) ---
+// --- 7. إدارة النقرات ---
 window.onclick = (e) => {
     if (e.target == modal) closeModal();
     if (e.target == policyModal) closePolicyModal();
@@ -193,20 +189,17 @@ window.onclick = (e) => {
     }
 };
 
-// --- 8. وظيفة البحث الجديدة ---
+// --- 8. وظيفة البحث ---
 function handleSearch(query) {
     const term = query.toLowerCase().trim();
-    
     if (term === "") {
         render(allProducts);
         return;
     }
-
     const filtered = allProducts.filter(p => 
         p.name.toLowerCase().includes(term) || 
         (p.cat && p.cat.toLowerCase().includes(term))
     );
-
     render(filtered);
 }
 

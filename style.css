@@ -604,6 +604,7 @@ body { background-color: var(--dark-bg); color: var(--text-white); direction: rt
     height: 100%;
     object-fit: cover; /* لضمان ملء الصورة للمساحة الجديدة دون تشويه */
     border-radius: 12px;
+    
 }
 
 /* تأثير التكبير عند تمرير الماوس */
@@ -624,6 +625,7 @@ body { background-color: var(--dark-bg); color: var(--text-white); direction: rt
     .categories-container {
         gap: 6px; /* تقليل المسافة بين الأزرار */
         padding: 5px 1% 5px; /* تقليل الحشو العلوي */
+
     }
 
     .cat-btn {
@@ -701,4 +703,49 @@ body { background-color: var(--dark-bg); color: var(--text-white); direction: rt
     .mobile-only {
         display: none !important;
     }
+}
+
+/* --- التنسيق الجديد لسطر الثمن والتوفر --- */
+.price-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: nowrap; /* يمنع النزول لسطر جديد */
+    margin-bottom: 6px;
+}
+
+.availability-tag {
+    font-size: 0.65rem;
+    background: #27ae60;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 4px;
+    white-space: nowrap;
+}
+
+/* --- تنسيق سطر الدفع عند الاستلام --- */
+.payment-row {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.cod-tag {
+    font-size: 0.65rem;
+    background: #34495e;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    width: 90%;
+    text-align: center;
+    white-space: nowrap;
+}
+
+/* تحسينات إضافية لوضع الموبايل */
+@media (max-width: 768px) {
+    .price-row { gap: 4px; }
+    .price { font-size: 0.85rem !important; }
+    .old-price { font-size: 0.7rem !important; }
+    .availability-tag, .cod-tag { font-size: 0.6rem; }
 }
