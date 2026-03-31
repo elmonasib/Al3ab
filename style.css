@@ -623,7 +623,7 @@ body { background-color: var(--dark-bg); color: var(--text-white); direction: rt
 @media (max-width: 768px) {
     .categories-container {
         gap: 6px; /* تقليل المسافة بين الأزرار */
-        padding: 20px 3% 10px; /* تقليل الحشو العلوي */
+        padding: 5px 1% 5px; /* تقليل الحشو العلوي */
     }
 
     .cat-btn {
