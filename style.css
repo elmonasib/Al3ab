@@ -104,6 +104,7 @@ body { background-color: var(--dark-bg); color: var(--text-white); direction: rt
     font-weight: bold;
     padding: 2px 5px;
     border-radius: 50%;
+    border: 20px #ff8605;
 }
 
 /* تنسيق الموبايل */
@@ -144,7 +145,7 @@ body { background-color: var(--dark-bg); color: var(--text-white); direction: rt
 }
 
 .card-info h3 {
-    font-size: 0.85rem; /* خط أصغر وأنيق */
+    font-size: 1.0rem; /* خط أصغر وأنيق */
     color: #ffffff; /* لون رمادي فاتح وليس أبيض فاقع */
     font-weight: 400; /* خط نحيف */
     margin-bottom: 4px;
@@ -153,7 +154,7 @@ body { background-color: var(--dark-bg); color: var(--text-white); direction: rt
 
 .product-specs {
     font-size: 0.75rem;
-    color: #888;
+    color: #ffffff;
     margin-bottom: 8px;
     display: flex;
     justify-content: center;
@@ -493,7 +494,8 @@ body { background-color: var(--dark-bg); color: var(--text-white); direction: rt
         margin-right: 10px;
     }
     #main-search {
-        width: 120px;
+        width: 140px;
+        height: 25px;
     }
     .search-container:focus-within {
         width: 150px;
@@ -517,6 +519,7 @@ body { background-color: var(--dark-bg); color: var(--text-white); direction: rt
         cursor: pointer;
         z-index: 10001;
         color: white;
+        padding-left: 20px;
     }
 
     /* القائمة الجانبية: 40% من اليسار */
@@ -527,13 +530,15 @@ body { background-color: var(--dark-bg); color: var(--text-white); direction: rt
         top: 0;
         left: 0; 
         width: 40%; 
-        height: 100vh;
+        height: 500px;
         background: rgba(15, 15, 15, 0.98);
         padding-top: 80px;
         z-index: 10000;
         border-right: 2px solid var(--primary-orange);
         transform: translateX(-100%);
         transition: transform 0.3s ease-in-out;
+        
+        gap: 5px;
     }
 
     .nav-links.active {
@@ -573,33 +578,127 @@ body { background-color: var(--dark-bg); color: var(--text-white); direction: rt
     }
 }
 
+/* --- تنسيق قسم البنر وتوسيطه في الصفحة --- */
 .banner-section {
     width: 100%;
     display: flex;
-    justify-content: center;
-    margin-top: 15px;
-    margin-bottom: 20px;
-    
+    justify-content: center; /* توسيط أفقي تماماً */
+    align-items: center;    /* توسيط عمودي إذا لزم الأمر */
+    margin-top: 25px;       /* مسافة إضافية من الهيدر للفخامة */
+    margin-bottom: 30px;
+    padding: 0 5%;          /* حماية الجوانب في الشاشات المتوسطة */
 }
 
+/* --- تكبير البنر في وضع الحاسوب --- */
 .toy-banner {
     display: block;
-    width: 750px; /* الحجم الطبيعي الذي طلبته */
-    height: 90px;
-    transition: transform 0.3s;
+    width: 1000px; /* تم التكبير من 750px إلى 1000px */
+    height: 150px; /* زيادة الارتفاع ليتناسب مع العرض الجديد */
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border-radius: 12px; /* إضافة انحناء بسيط للزوايا لمظهر عصري */
+    overflow: hidden;
 }
 
 .toy-banner img {
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: cover; /* لضمان ملء الصورة للمساحة الجديدة دون تشويه */
+    border-radius: 12px;
 }
 
-/* للجوال: يتقلص ليناسب الشاشة تلقائياً */
+/* تأثير التكبير عند تمرير الماوس */
+.toy-banner:hover {
+    transform: scale(1.02);
+}
+
+/* الحفاظ على استجابة الجوال تلقائياً كما هي في الكود الأصلي */
 @media (max-width: 768px) {
     .toy-banner {
         width: 95%;
         height: auto;
-        
+    }
+}
+
+/* --- تعديل حجم أزرار الأقسام للجوال فقط --- */
+@media (max-width: 768px) {
+    .categories-container {
+        gap: 8px; /* تقليل المسافة بين الأزرار */
+        padding: 20px 3% 10px; /* تقليل الحشو العلوي */
+    }
+
+    .cat-btn {
+        padding: 6px 15px; /* تصغير الحشو الداخلي للزر */
+        font-size: 0.50rem; /* تصغير حجم الخط */
+        border-radius: 20px; /* جعل الانحناء أنعم يتناسب مع الحجم الصغير */
+    }
+
+    .cat-btn i {
+        font-size: 0.6rem; /* تصغير حجم الأيقونة داخل الزر */
+        margin-left: 4px;
+    }
+}
+
+/* --- تنسيق معرض الصور داخل النافذة المنبثقة فقط --- */
+.modal-image-section {
+    text-align: center;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.main-modal-img {
+    width: 100%;
+    max-height: 400px; /* تحديد أقصى ارتفاع للصورة */
+    object-fit: contain;
+    border-radius: 12px;
+    background: #1a1a1a; /* خلفية داكنة للصور الشفافة */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    margin-bottom: 15px;
+}
+
+.modal-thumbnails {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding: 5px;
+}
+
+.modal-thumb {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+    cursor: pointer;
+    border: 2px solid #333;
+    transition: all 0.3s ease;
+}
+
+/* تمييز الصورة النشطة باللون البرتقالي */
+.modal-thumb.active {
+    border-color: var(--primary-orange);
+    transform: scale(1.1);
+    box-shadow: 0 0 8px var(--primary-orange);
+}
+
+.modal-thumb:hover {
+    border-color: var(--primary-orange);
+    opacity: 0.8;
+}
+
+/* تحسين شكل النافذة على الجوال */
+@media (max-width: 768px) {
+    .modal-thumb {
+        width: 50px;
+        height: 50px;
+    }
+    .main-modal-img {
+        max-height: 300px;
+    }
+}
+
+/* إخفاء روابط الجوال الإضافية في وضع الحاسوب */
+@media (min-width: 769px) {
+    .mobile-only {
+        display: none !important;
     }
 }

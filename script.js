@@ -1,17 +1,17 @@
 // --- 1. إعدادات المتجر ---
-const myPhoneNumber = "212600000000"; 
+const myPhoneNumber = "212631743274"; 
 const placeholder = "https://via.placeholder.com/300x250?text=No+Image";
 
 const container = document.getElementById('products-container');
 const modal = document.getElementById('payment-modal');
 const detailArea = document.getElementById('product-detail-area');
-const whatsappBtn = document.getElementById('whatsapp-btn');
 const policyModal = document.getElementById('policy-modal');
 const policyTextArea = document.getElementById('policy-text-area');
+const whatsappBtn = document.getElementById('whatsapp-btn');
 
 let selectedProduct = null;
 
-// --- 2. بيانات السياسات (من نحن والضمان) ---
+// --- 2. بيانات السياسات ومن نحن ومعلومات الشحن ---
 const policies = {
     privacy: {
         title: "سياسة الخصوصية",
@@ -19,124 +19,181 @@ const policies = {
     },
     exchange: {
         title: "سياسة التبديل والضمان",
-        content: "يمكن استبدال المنتج خلال 24 ساعة في حال وجود خلل فني غير موضح في وصف المنتج. يجب أن يكون المنتج بنفس الحالة التي استُلم بها."
+        content: "يمكن استبدال المنتج خلال 24 ساعة في حال وجود خلل فني غير موضح في وصف المنتج."
     },
-    refund: {
-        title: "استرجاع النقود",
-        content: "يتم استرداد المبلغ كاملاً في حال تبين أن المنتج غير مطابق للمواصفات المعروضة أو في حال وجود كسر ناتج عن الشحن."
+    about: {
+        title: "من نحن",
+        content: "متجر النوادر وجهتك الأولى في المغرب للألعاب الكلاسيكية والقطع النادرة. نعيد لك ذكريات الزمن الجميل بقطع منتقاة بعناية."
+    },
+    shipping: {
+        title: "معلومات الشحن والتوصيل",
+        content: `
+            <div style="text-align: right; line-height: 1.8;">
+                <p>نشحن إلى <strong>جميع مدن المملكة المغربية</strong>.</p>
+                <ul style="margin-top: 10px; list-style: none; padding-right: 0;">
+                    <li><i class="fas fa-truck" style="color:var(--primary-orange)"></i> التوصيل لجميع المدن دون استثناء.</li>
+                    <li><i class="fas fa-wallet" style="color:var(--primary-orange)"></i> مصاريف الشحن على عاتق الزبون.</li>
+                    <li><i class="fas fa-clock" style="color:var(--primary-orange)"></i> مدة التوصيل من 2 إلى 4 أيام عمل.</li>
+                </ul>
+            </div>
+        `
     }
 };
 
-function showPolicy(type) {
-    const policy = policies[type];
-    if (policy && policyModal && policyTextArea) {
-        policyTextArea.innerHTML = `
-            <h2 style="color:var(--primary-orange); margin-bottom:15px;">${policy.title}</h2>
-            <p style="line-height:1.8; color:#333;">${policy.content}</p>
-        `;
-        policyModal.style.display = 'flex';
-    }
-}
-
-function showAbout() {
-    if (policyModal && policyTextArea) {
-        policyTextArea.innerHTML = `
-            <h2 style="color:var(--primary-orange); margin-bottom:15px;">من نحن</h2>
-            <p style="line-height:1.8; color:#333;">
-                <b>متجر النوادر</b> هو منصة متخصصة في إحياء الذكريات وتقديم القطع النادرة والألعاب الكلاسيكية. 
-                نحن نهتم بجودة المنتجات ونسعى لتوفير نوادر لا تجدها في أي مكان آخر لعشاق الأنتيك والريترو.
-            </p>
-        `;
-        policyModal.style.display = 'flex';
-    }
-}
-
-// --- 3. فحص المنتجات الجديدة ---
+// --- 3. وظائف المساعدة والعرض ---
 function isNewProduct(dateStr) {
-    if (!dateStr) return false;
     const addedDate = new Date(dateStr);
     const today = new Date();
-    return (Math.abs(today - addedDate) / (1000 * 60 * 60 * 24)) <= 7;
+    const diffDays = Math.ceil(Math.abs(today - addedDate) / (1000 * 60 * 60 * 24));
+    return diffDays <= 7;
 }
 
-// --- 4. دالة عرض المنتجات (إعادة الطول والحالة) ---
 function render(items) {
     if (!container) return;
     container.innerHTML = "";
-    items.forEach(p => {
+    items.forEach((p) => {
         const card = document.createElement('div');
         card.className = 'card';
         const isNew = isNewProduct(p.dateAdded);
-        const img = (p.images && p.images.length > 0) ? p.images[0] : placeholder;
+        const displayImg = (p.images && p.images.length > 0) ? p.images[0] : placeholder;
+        const hasDiscount = p.oldPrice ? true : false;
 
         card.innerHTML = `
             <div class="card-img-container">
                 ${isNew ? '<span class="badge-new">جديد</span>' : ''}
-                <img src="${img}" onerror="this.src='${placeholder}'">
+                ${hasDiscount ? '<span class="badge-discount" style="position: absolute; top: 10px; left: 10px; background: #e74c3c; color: white; padding: 5px 10px; font-size: 0.8rem; border-radius: 5px; font-weight: bold; z-index: 2;">عرض خاص</span>' : ''}
+                <img src="${displayImg}" onerror="this.src='${placeholder}'">
             </div>
             <div class="card-info">
                 <h3>${p.name}</h3>
-                <div class="product-specs">
+                <div class="product-specs" style="margin-bottom: 8px; color: #bbb; font-size: 0.85rem;">
                     <span><i class="fas fa-ruler-vertical"></i> ${p.length || '--'}</span>
-                    <span> | </span>
+                    <span style="margin: 0 5px;"> | </span>
                     <span><i class="fas fa-tag"></i> ${p.status || 'مستعمل'}</span>
                 </div>
-                <span class="price">${p.price}</span>
+                
+                <div class="price-section" style="display: flex; flex-direction: column; gap: 6px;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span class="price" style="color: var(--primary-orange); font-weight: bold; font-size: 1.2rem;">${p.price}</span>
+                        ${hasDiscount ? `<span class="old-price" style="text-decoration: line-through; color: #888; font-size: 0.85rem;">${p.oldPrice}</span>` : ''}
+                    </div>
+                    
+                    <div class="payment-tags" style="display: flex; gap: 4px; flex-wrap: wrap;">
+                        <span style="font-size: 0.65rem; background: #27ae60; color: white; padding: 2px 6px; border-radius: 4px;">
+                            <i class="fas fa-check-circle"></i> متوفر
+                        </span>
+                        <span style="font-size: 0.65rem; background: #34495e; color: white; padding: 2px 6px; border-radius: 4px;">
+                            <i class="fas fa-hand-holding-usd"></i> الدفع عند الاستلام
+                        </span>
+                    </div>
+                </div>
             </div>
         `;
-        card.onclick = (e) => { e.stopPropagation(); openModal(p); };
+        card.onclick = () => openModal(p);
         container.appendChild(card);
     });
 }
 
-// --- 5. فتح نافذة المنتج (إعادة الطول والحالة في التفاصيل) ---
-function openModal(p) {
-    selectedProduct = p;
-    const images = p.images || [placeholder];
-    detailArea.innerHTML = `
-        <img id="modal-main-img" src="${images[0]}" class="main-modal-img" style="width:100%; max-height:250px; object-fit:contain; border-radius:10px;">
-        <h2 style="margin-top:20px; font-size:1.4rem;">${p.name}</h2>
-        <div style="margin: 15px 0; text-align:right;">
-            <p><b>الحالة:</b> <span style="color:#FF8C00;">${p.status || 'مستعمل'}</span></p>
-            <p><b>الطول:</b> ${p.length || 'غير محدد'}</p>
-        </div>
-        <p style="color:#FF8C00; font-weight:bold; font-size:1.8rem;">${p.price}</p>
-    `;
-    modal.style.display = 'flex';
-}
-
-function closeModal() { if (modal) modal.style.display = 'none'; }
-function closePolicyModal() { if (policyModal) policyModal.style.display = 'none'; }
-
-// --- 6. القائمة والبحث والأقسام ---
+// --- 4. التحكم في القائمة (الثلاث شرطات) ---
 function toggleMenu() {
     const navLinks = document.querySelector('.nav-links');
     if (navLinks) navLinks.classList.toggle('active');
 }
 
+// --- 5. وظائف الروابط والسياسات ---
 function filterByCategory(category, btn) {
-    document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-    if(btn) btn.classList.add('active');
-    render(category === 'all' ? allProducts : allProducts.filter(p => p.cat === category));
+    const navLinks = document.querySelector('.nav-links');
+    if (navLinks) navLinks.classList.remove('active'); // إغلاق القائمة فور الضغط
+
+    if (category === 'latest') {
+        const latest = [...allProducts].sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded));
+        render(latest);
+    } else if (category === 'special') {
+        render(allProducts.filter(p => p.oldPrice));
+    } else {
+        render(category === 'all' ? allProducts : allProducts.filter(p => p.cat === category));
+    }
 }
 
-function handleSearch(query) {
-    const searchTerm = query.toLowerCase().trim();
-    render(allProducts.filter(p => p.name.toLowerCase().includes(searchTerm)));
+function showPolicy(type) {
+    const policy = policies[type];
+    if (policy) {
+        policyTextArea.innerHTML = `<h2>${policy.title}</h2><div>${policy.content}</div>`;
+        policyModal.style.display = 'flex';
+        const navLinks = document.querySelector('.nav-links');
+        if (navLinks) navLinks.classList.remove('active');
+    }
 }
 
-// --- 7. إدارة النقرات ---
-window.onclick = (event) => {
-    if (event.target == modal) closeModal();
-    if (event.target == policyModal) closePolicyModal();
+function showAbout() { showPolicy('about'); }
+
+// --- 6. النافذة المنبثقة والمعرض ---
+function openModal(p) {
+    selectedProduct = p;
+    const productImages = (p.images && p.images.length > 0) ? p.images : [placeholder];
     
+    let modalThumbsHtml = '';
+    if (productImages.length > 1) {
+        modalThumbsHtml = `<div class="modal-thumbnails" style="display: flex; justify-content: center; gap: 8px; margin-top: 10px; flex-wrap: wrap;">`;
+        productImages.forEach((img, idx) => {
+            modalThumbsHtml += `<img src="${img}" class="modal-thumb ${idx === 0 ? 'active' : ''}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px; cursor: pointer; border: 2px solid #333;" onclick="changeModalImage(this)">`;
+        });
+        modalThumbsHtml += `</div>`;
+    }
+
+    detailArea.innerHTML = `
+        <div class="modal-image-section">
+            <img id="main-modal-img" src="${productImages[0]}" class="main-modal-img" style="width: 100%; max-height: 300px; object-fit: contain; border-radius: 10px; background: #111;" onerror="this.src='${placeholder}'">
+            ${modalThumbsHtml}
+        </div>
+        <div class="modal-info-section">
+            <h2>${p.name}</h2>
+            <p><strong>الحالة:</strong> ${p.status || 'مستعمل'}</p>
+            <p><strong>الطول:</strong> ${p.length || '--'}</p>
+            <p class="modal-price-tag" style="margin-top:15px; font-weight:bold; font-size:1.8rem; color:var(--primary-orange);">${p.price}</p>
+            <p style="color: #27ae60; font-size: 0.9rem; margin-top: 10px;"><i class="fas fa-truck"></i> التوصيل لكل المدن - الدفع عند الاستلام</p>
+        </div>
+    `;
+    modal.style.display = 'flex';
+}
+
+function changeModalImage(thumb) {
+    const mainImg = document.getElementById('main-modal-img');
+    if (mainImg) {
+        mainImg.src = thumb.src;
+        thumb.parentElement.querySelectorAll('.modal-thumb').forEach(t => {
+            t.style.borderColor = "#333";
+            t.classList.remove('active');
+        });
+        thumb.style.borderColor = "var(--primary-orange)";
+        thumb.classList.add('active');
+    }
+}
+
+function closeModal() { modal.style.display = 'none'; }
+function closePolicyModal() { policyModal.style.display = 'none'; }
+
+function sendWhatsApp() {
+    if (!selectedProduct) return;
+    const text = `السلام عليكم، أريد الاستفسار عن: ${selectedProduct.name} (السعر: ${selectedProduct.price})`;
+    window.open(`https://wa.me/${myPhoneNumber}?text=${encodeURIComponent(text)}`, '_blank');
+}
+
+// --- 7. إدارة النقرات (إغلاق كل شيء عند النقر في الفراغ) ---
+window.onclick = (e) => {
+    // إغلاق النوافذ المنبثقة
+    if (e.target == modal) closeModal();
+    if (e.target == policyModal) closePolicyModal();
+    
+    // إغلاق قائمة الجوال عند النقر خارجها
     const navLinks = document.querySelector('.nav-links');
     const menuToggle = document.querySelector('.menu-toggle');
     if (navLinks && navLinks.classList.contains('active')) {
-        if (!navLinks.contains(event.target) && !menuToggle.contains(event.target)) {
+        if (!navLinks.contains(e.target) && !menuToggle.contains(e.target)) {
             navLinks.classList.remove('active');
         }
     }
 };
 
-document.addEventListener('DOMContentLoaded', () => { if (typeof allProducts !== 'undefined') render(allProducts); });
+if(whatsappBtn) whatsappBtn.onclick = sendWhatsApp;
+document.addEventListener('DOMContentLoaded', () => render(allProducts));

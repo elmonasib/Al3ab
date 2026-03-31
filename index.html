@@ -14,15 +14,19 @@
     <nav class="nav-container">
         <div class="logo-section">
             <a href="index.html">
-                <img src="images/9999.png" alt="متجر النوادر" class="header-logo">
+                <img src="images/logo.png" alt="متجر النوادر" class="header-logo">
             </a>
         </div>
 
         <ul class="nav-links">
-    <li><a href="index.html" class="active"><i class="fas fa-home"></i> الرئيسية</a></li>
-    <li><a href="javascript:void(0)" onclick="showAbout()"><i class="fas fa-info-circle"></i> من نحن</a></li>
-    <li><a href="#products-container"><i class="fas fa-horse"></i> النوادر</a></li>
-    <li><a href="javascript:void(0)" onclick="showPolicy('exchange')"><i class="fas fa-shield-alt"></i> الضمان</a></li>
+    <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
+    <li><a href="javascript:void(0)" onclick="showPolicy('about')"><i class="fas fa-info-circle"></i> من نحن</a></li>
+    
+    <li class="mobile-only"><a href="javascript:void(0)" onclick="filterByCategory('special', this)"><i class="fas fa-percentage"></i> عروض خاصة</a></li>
+    <li class="mobile-only"><a href="javascript:void(0)" onclick="showPolicy('shipping')"><i class="fas fa-truck"></i> معلومات الشحن</a></li>
+    <li class="mobile-only"><a href="javascript:void(0)" onclick="filterByCategory('latest', this)"><i class="fas fa-bolt"></i> أحدث الألعاب</a></li>
+    <li class="mobile-only"><a href="javascript:void(0)" onclick="showPolicy('privacy')"><i class="fas fa-user-shield"></i> الخصوصية</a></li>
+    <li class="mobile-only"><a href="javascript:void(0)" onclick="showPolicy('exchange')"><i class="fas fa-sync"></i> التبديل والضمان</a></li>
 </ul>
 
        <div class="header-actions">
@@ -31,10 +35,7 @@
     <i class="fas fa-search search-icon"></i>
 </div>
     
-    <button class="icon-btn cart-btn" title="السلة">
-        <i class="fas fa-shopping-bag"></i>
-        <span class="cart-count">0</span>
-    </button>
+   
 </div>
         
         <div class="menu-toggle" onclick="toggleMenu()">
@@ -67,6 +68,14 @@
     <button class="cat-btn" onclick="filterByCategory('games', this)">
         <i class="fas fa-gamepad"></i> ألعاب
     </button>
+
+    <button class="cat-btn" onclick="filterByCategory('animal', this)">
+        <i class="fas fa-gamepad"></i> حيوان
+    </button>
+
+    <button class="cat-btn" onclick="filterByCategory('dooll', this)">
+        <i class="fas fa-gamepad"></i> دمى
+    </button>
 </div>
 
         <div class="products-grid" id="products-container"></div>
@@ -98,7 +107,7 @@
                 <li><a href="javascript:void(0)" onclick="showPolicy('privacy')"><i class="fas fa-shield-alt"></i> سياسة الخصوصية</a></li>
                 <li><a href="javascript:void(0)" onclick="showPolicy('exchange')"><i class="fas fa-exchange-alt"></i> سياسة التبديل</a></li>
                 <li><a href="javascript:void(0)" onclick="showPolicy('refund')"><i class="fas fa-undo"></i> استرجاع النقود</a></li>
-                <li><a href="#"><i class="fas fa-truck"></i> معلومات الشحن</a></li>
+                <li><a href="javascript:void(0)" onclick="showPolicy('shipping')"><i class="fas fa-truck"></i> معلومات الشحن</a></li>
             </ul>
         </div>
 
@@ -107,7 +116,7 @@
             <ul class="footer-links">
                 <li><a href="#">الرئيسية</a></li>
                 <li><a href="#">أحدث الألعاب</a></li>
-                <li><a href="#">عروض خاصة</a></li>
+                <a href="javascript:void(0)" onclick="filterByCategory('special', this)">عروض خاصة</a>
             </ul>
         </div>
 
